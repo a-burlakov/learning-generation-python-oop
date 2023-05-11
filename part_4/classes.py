@@ -22,3 +22,13 @@ class House:
 
     def add_rooms(self, n):
         self.rooms += n
+
+
+from math import pi
+
+
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+        self.diameter = 2 * radius
+        self.area = pi * radius * radius
