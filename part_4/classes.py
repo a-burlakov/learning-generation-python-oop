@@ -1,3 +1,6 @@
+import math
+
+
 class Gun:
     def __init__(self):
         self.shoot_style = "pif"
@@ -26,6 +29,20 @@ class User:
 
     def add_friends(self, n):
         self.friends += n
+
+
+class Numbers:
+    def __init__(self):
+        self.numbers = []
+
+    def add_number(self, n):
+        self.numbers.append(n)
+
+    def get_even(self):
+        return [x for x in self.numbers if x % 2 == 0]
+
+    def get_odd(self):
+        return [x for x in self.numbers if x % 2 != 0]
 
 
 class House:
@@ -66,3 +83,81 @@ class Bee:
 
     def move_right(self, n):
         self.x += n
+
+
+class Scales:
+    def __init__(self):
+        self.left = 0
+        self.right = 0
+
+    def add_right(self, m):
+        self.right += m
+
+    def add_left(self, m):
+        self.left += m
+
+    def get_result(self):
+        if self.left == self.right:
+            return "Весы в равновесии"
+        elif self.left > self.right:
+            return "Левая чаша тяжелее"
+        else:
+            return "Правая чаша тяжелее"
+
+
+class Vector:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+
+    def abs(self):
+        return math.sqrt((self.x * self.x) + (self.y * self.y))
+
+
+class TextHandler:
+    def __init__(self):
+        self.words = []
+
+    def add_words(self, words: str):
+        self.words.extend(words.split())
+
+    def get_shortest_words(self):
+        if not self.words:
+            return []
+        min_len = len(min(self.words, key=len))
+        return [w for w in self.words if len(w) == min_len]
+
+    def get_longest_words(self):
+        if not self.words:
+            return []
+        max_len = len(max(self.words, key=len))
+        return [w for w in self.words if len(w) == max_len]
+
+
+class Wordplay:
+    def __init__(self, words: list = None):
+        if words is None:
+            words = []
+
+        self.words = words.copy()
+
+    def add_word(self, word: str):
+        if word not in self.words:
+            self.words.append(word)
+
+    def words_with_length(self, n: int):
+        return [w for w in self.words if len(w) == n]
+
+    def only(self, *args):
+        return [w for w in self.words if all(s in args for s in w)]
+
+    def avoid(self, *args):
+        return [w for w in self.words if all(s not in args for s in w)]
+
+
+words = ["Лейбниц", "Бэббидж", "Нейман", "Джобс", "да_Винчи", "Касперский"]
+wordplay = Wordplay(words)
+
+words.extend(["Гуев", "Харисов", "Светкин"])
+print(words)
+print(wordplay.words)
