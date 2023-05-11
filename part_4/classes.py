@@ -1,6 +1,22 @@
 class Gun:
+    def __init__(self):
+        self.shoot_style = "pif"
+        self.next_shoot_style = "paf"
+        self.counter = 0
+
     def shoot(self):
-        print("pif")
+        print(self.shoot_style)
+        self.shoot_style, self.next_shoot_style = (
+            self.next_shoot_style,
+            self.shoot_style,
+        )
+        self.counter += 1
+
+    def shots_count(self):
+        return self.counter
+
+    def shots_reset(self):
+        self.counter = 0
 
 
 class User:
@@ -32,3 +48,21 @@ class Circle:
         self.radius = radius
         self.diameter = 2 * radius
         self.area = pi * radius * radius
+
+
+class Bee:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+    def move_up(self, n):
+        self.y += n
+
+    def move_down(self, n):
+        self.y -= n
+
+    def move_left(self, n):
+        self.x -= n
+
+    def move_right(self, n):
+        self.x += n
