@@ -22,13 +22,14 @@ class Gun:
         self.counter = 0
 
 
-class User:
-    def __init__(self, name):
-        self.name = name
-        self.friends = 0
-
-    def add_friends(self, n):
-        self.friends += n
+#
+# class User:
+#     def __init__(self, name):
+#         self.name = name
+#         self.friends = 0
+#
+#     def add_friends(self, n):
+#         self.friends += n
 
 
 class Numbers:
@@ -58,13 +59,6 @@ class House:
 
 
 from math import pi
-
-
-class Circle:
-    def __init__(self, radius):
-        self.radius = radius
-        self.diameter = 2 * radius
-        self.area = pi * radius * radius
 
 
 class Bee:
@@ -155,9 +149,70 @@ class Wordplay:
         return [w for w in self.words if all(s not in args for s in w)]
 
 
-words = ["Лейбниц", "Бэббидж", "Нейман", "Джобс", "да_Винчи", "Касперский"]
-wordplay = Wordplay(words)
+from math import pi
 
-words.extend(["Гуев", "Харисов", "Светкин"])
-print(words)
-print(wordplay.words)
+
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+        self._diameter = 2 * radius
+        self._area = pi * radius * radius
+
+    def get_radius(self):
+        return self._radius
+
+    def get_diameter(self):
+        return self._diameter
+
+    def get_area(self):
+        return self._area
+
+
+class BankAccount:
+    def __init__(self, balance: int | float = 0):
+        self._balance: int | float = balance
+
+    def get_balance(self):
+        return self._balance
+
+    def deposit(self, amount: int | float):
+        self._balance += amount
+
+    def withdraw(self, amount: int | float):
+        if self._balance < amount:
+            raise ValueError("На счете недостаточно средств")
+        else:
+            self._balance -= amount
+
+    def transfer(self, account: "BankAccount", amount: int | float):
+        if self._balance < amount:
+            raise ValueError("На счете недостаточно средств")
+        else:
+            self._balance -= amount
+            account.deposit(amount)
+
+
+class User:
+    def __init__(self, name: str, age: int):
+        self._name: str = ""
+        self._age: int = 0
+        self.set_name(name)
+        self.set_age(age)
+
+    def get_name(self):
+        return self._name
+
+    def set_name(self, new_name: str):
+        if isinstance(new_name, str) and new_name and new_name.isalpha():
+            self._name = new_name
+        else:
+            raise ValueError("Некорректное имя")
+
+    def get_age(self):
+        return self._age
+
+    def set_age(self, new_age: int):
+        if isinstance(new_age, int) and new_age and 0 <= new_age <= 110:
+            self._age = new_age
+        else:
+            raise ValueError("Некорректный возраст")
