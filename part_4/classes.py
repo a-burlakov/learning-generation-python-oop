@@ -216,3 +216,47 @@ class User:
             self._age = new_age
         else:
             raise ValueError("Некорректный возраст")
+
+
+class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def get_perimeter(self):
+        return 2 * (self.length + self.width)
+
+    def get_area(self):
+        return self.length * self.width
+
+    perimeter = property(get_perimeter)
+    area = property(get_area)
+
+
+class HourClock:
+    def __init__(self, hours):
+        self.hours = hours
+
+    def get_hours(self):
+        return self._hours
+
+    def set_hours(self, hours):
+        if not (isinstance(hours, int) and 1 <= hours <= 12):
+            raise ValueError("Некорректное время")
+        self._hours = hours
+
+    hours = property(get_hours, set_hours)
+
+
+class Person:
+    def __init__(self, name, surname):
+        self.name = name
+        self.surname = surname
+
+    def get_fullname(self):
+        return f"{self.name} {self.surname}"
+
+    def set_fullname(self, fullname):
+        self.name, self.surname = fullname.split()
+
+    fullname = property(get_fullname, set_fullname)
