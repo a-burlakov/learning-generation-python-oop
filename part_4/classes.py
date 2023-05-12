@@ -253,10 +253,91 @@ class Person:
         self.name = name
         self.surname = surname
 
-    def get_fullname(self):
+    @property
+    def fullname(self):
         return f"{self.name} {self.surname}"
 
-    def set_fullname(self, fullname):
+    @fullname.setter
+    def fullname(self, fullname):
         self.name, self.surname = fullname.split()
 
-    fullname = property(get_fullname, set_fullname)
+
+def hash_function(password):
+    hash_value = 0
+    for char, index in zip(password, range(len(password))):
+        hash_value += ord(char) * index
+    return hash_value % 10**9
+
+
+class Account:
+    def __init__(self, login, password):
+        self._login = login
+        self.password = password
+
+    @property
+    def login(self):
+        return self._login
+
+    @login.setter
+    def login(self, login):
+        raise AttributeError("Изменение логина невозможно")
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, password):
+        self._password = hash_function(password)
+
+
+class QuadraticPolynomial:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @property
+    def discriminant(self):
+        return self.b * self.b - 4 * self.a * self.c
+
+    @property
+    def x1(self):
+        discriminant = self.discriminant
+        if discriminant < 0:
+            return None
+        return (-self.b - discriminant**0.5) / (2 * self.a)
+
+    @property
+    def x2(self):
+        discriminant = self.discriminant
+        if discriminant < 0:
+            return None
+        return (-self.b + discriminant**0.5) / (2 * self.a)
+
+    @property
+    def view(self):
+        # Передаю спасибо линтеру Black за то, что помог мне отформатировать этот ужас.
+        view_string = (
+            f"{self.a}x^2 "
+            f"{'-' if self.b < 0 else '+'} {abs(self.b)}x "
+            f"{'-' if self.c < 0 else '+'} {abs(self.c)}"
+        )
+
+        return view_string
+
+    @property
+    def coefficients(self):
+        return f"({self.a}, {self.b}, {self.c})"
+
+    @coefficients.setter
+    def coefficients(self, coefficients):
+        self.a, self.b, self.c = coefficients
+
+
+polynom = QuadraticPolynomial(1, 2, -3)
+
+print(polynom.x1)
+print(polynom.x2)
+print(polynom.view)
+print(polynom.coefficients)
