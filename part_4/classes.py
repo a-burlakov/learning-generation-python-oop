@@ -1,4 +1,5 @@
 import math
+from functools import singledispatchmethod
 
 from part_2.quantify import iterable
 
@@ -417,13 +418,67 @@ class StrExtension:
         return "".join(x if x not in chars else char for x in string)
 
 
-print(
-    StrExtension.remove_vowels(
-        "Success is the ability to go from failure to failure without losing your enthusiasm."
-    )
-)
-print(
-    StrExtension.remove_vowels(
-        "Success is the ability to go from failure to failure without losing your enthusiasm.".upper()
-    )
-)
+# print(
+#     StrExtension.remove_vowels(
+#         "Success is the ability to go from failure to failure without losing your enthusiasm."
+#     )
+# )
+# print(
+#     StrExtension.remove_vowels(
+#         "Success is the ability to go from failure to failure without losing your enthusiasm.".upper()
+#     )
+# )
+
+
+# from functools import singledispatchmethod
+#
+#
+# class MyClass:
+#     @singledispatchmethod
+#     def base_implementation(self, arg):
+#         print("Базовая реализация")
+#
+#     @base_implementation.register
+#     def intfloat_implementation(self, arg: int | float):
+#         print(type(arg))
+#         print("Реализация для целочисленного и вещественного аргументов")
+#
+#
+# obj = MyClass()
+#
+# obj.base_implementation(1)
+# obj.base_implementation(1.0)
+
+
+class Processor:
+    @singledispatchmethod
+    def process(self, data):
+        raise TypeError("Аргумент переданного типа не поддерживается")
+
+    @staticmethod
+    @process.register(int)
+    @process.register(float)
+    def _from_int_float_process(data):
+        return data * 2
+
+    @staticmethod
+    @process.register(str)
+    def _from_str_process(data):
+        return data.upper()
+
+    @staticmethod
+    @process.register(list)
+    def _from_list_process(data):
+        return sorted(data)
+
+    @staticmethod
+    @process.register(tuple)
+    def _from_tuple_process(data):
+        return tuple(sorted(data))
+
+
+print(Processor.process(10))
+print(Processor.process(5.2))
+print(Processor.process("hello"))
+print(Processor.process((4, 3, 2, 1)))
+print(Processor.process([3, 2, 1]))
