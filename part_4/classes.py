@@ -1,5 +1,7 @@
 import math
 
+from part_2.quantify import iterable
+
 
 class Gun:
     def __init__(self):
@@ -333,6 +335,14 @@ class QuadraticPolynomial:
     @coefficients.setter
     def coefficients(self, coefficients):
         self.a, self.b, self.c = coefficients
+
+    @classmethod
+    def from_iterable(cls, coefficients: iterable):
+        return QuadraticPolynomial(*coefficients)
+
+    @classmethod
+    def from_str(cls, coefficients: str):
+        return QuadraticPolynomial(*[float(x) for x in coefficients.split()])
 
 
 # class Circle:
