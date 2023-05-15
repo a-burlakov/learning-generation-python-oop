@@ -401,3 +401,29 @@ class Pet:
 # print(Pet.first_pet().name)
 # print(Pet.last_pet().name)
 # print(Pet.num_of_pets())
+
+
+class StrExtension:
+    @staticmethod
+    def remove_vowels(string: str):
+        return "".join(x for x in string if x.lower() not in "aeyiou")
+
+    @staticmethod
+    def leave_alpha(string: str):
+        return "".join(x for x in string if x.isalpha())
+
+    @staticmethod
+    def replace_all(string: str, chars: list, char: str):
+        return "".join(x if x not in chars else char for x in string)
+
+
+print(
+    StrExtension.remove_vowels(
+        "Success is the ability to go from failure to failure without losing your enthusiasm."
+    )
+)
+print(
+    StrExtension.remove_vowels(
+        "Success is the ability to go from failure to failure without losing your enthusiasm.".upper()
+    )
+)
