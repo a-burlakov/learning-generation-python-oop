@@ -495,8 +495,41 @@ class Negator:
         return not data
 
 
-print(Negator.neg(11.0))
-print(Negator.neg(-12))
-print(Negator.neg(True))
-print(Negator.neg(False))
-print(Negator.neg("number"))
+class Formatter:
+    @singledispatchmethod
+    @staticmethod
+    def format(data):
+        raise TypeError("Аргумент переданного типа не поддерживается")
+
+    @staticmethod
+    @format.register(int)
+    def _(data):
+        print(f"Целое число: {str(data)}")
+
+    @staticmethod
+    @format.register(float)
+    def _(data):
+        print(f"Вещественное число: {str(data)}")
+
+    @staticmethod
+    @format.register(list)
+    def _(data):
+        print(f"Элементы списка: {', '.join(str(x) for x in data)}")
+
+    @staticmethod
+    @format.register(tuple)
+    def _(data):
+        print(f"Элементы кортежа: {', '.join(str(x) for x in data)}")
+
+    @staticmethod
+    @format.register(dict)
+    def _(data):
+        data_to_print = [(k, v) for k, v in data.items()]
+        print(f"Пары словаря: {str(data_to_print).strip('[]')}")
+
+
+# Formatter.format([10, 20, 30, 40, 50])
+# Formatter.format(([1, 3], [2, 4, 6]))
+Formatter.format({"Cuphead": 1, "Mugman": 3})
+Formatter.format({1: "one", 2: "two"})
+Formatter.format({1: True, 0: False})
