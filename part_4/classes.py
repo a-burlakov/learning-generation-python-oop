@@ -335,12 +335,20 @@ class QuadraticPolynomial:
         self.a, self.b, self.c = coefficients
 
 
-class Circle:
-    def __init__(self, radius):
-        self.radius = radius
+# class Circle:
+#     def __init__(self, radius):
+#         self.radius = radius
+#
+#     @classmethod
+#     def from_diameter(cls, diameter):
+#         return Circle(diameter / 2)
 
-    @classmethod
-    def from_diameter(cls, diameter):
-        return Circle(diameter / 2)
 
 class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    @classmethod
+    def square(cls, side):
+        return Rectangle(side, side)
