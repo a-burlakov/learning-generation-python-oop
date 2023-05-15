@@ -477,8 +477,26 @@ class Processor:
         return tuple(sorted(data))
 
 
-print(Processor.process(10))
-print(Processor.process(5.2))
-print(Processor.process("hello"))
-print(Processor.process((4, 3, 2, 1)))
-print(Processor.process([3, 2, 1]))
+class Negator:
+    @singledispatchmethod
+    @staticmethod
+    def neg(data):
+        raise TypeError("Аргумент переданного типа не поддерживается")
+
+    @staticmethod
+    @neg.register(float)
+    @neg.register(int)
+    def _from_float_int_neg(data: float | int):
+        return -data
+
+    @staticmethod
+    @neg.register(bool)
+    def _from_bool_neg(data: bool):
+        return not data
+
+
+print(Negator.neg(11.0))
+print(Negator.neg(-12))
+print(Negator.neg(True))
+print(Negator.neg(False))
+print(Negator.neg("number"))
