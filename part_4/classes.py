@@ -362,3 +362,42 @@ class Rectangle:
     @classmethod
     def square(cls, side):
         return Rectangle(side, side)
+
+
+class Pet:
+
+    all_pets = []
+
+    def __init__(self, name):
+        self.name = name
+        self.all_pets.append(self)
+
+    @classmethod
+    def first_pet(cls):
+        # Ради интереса попрактиковался с match-case.
+        match cls.all_pets:
+            case []:
+                return None
+            case [first_pet, *_]:
+                return first_pet
+
+    @classmethod
+    def last_pet(cls):
+        match cls.all_pets:
+            case []:
+                return None
+            case [*_, last_pet]:
+                return last_pet
+
+    @classmethod
+    def num_of_pets(cls):
+        return len(cls.all_pets)
+
+
+# pet1 = Pet("Ratchet")
+# pet2 = Pet("Clank")
+# pet3 = Pet("Rivet")
+#
+# print(Pet.first_pet().name)
+# print(Pet.last_pet().name)
+# print(Pet.num_of_pets())
