@@ -335,9 +335,12 @@ class QuadraticPolynomial:
         self.a, self.b, self.c = coefficients
 
 
-polynom = QuadraticPolynomial(1, 2, -3)
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
 
-print(polynom.x1)
-print(polynom.x2)
-print(polynom.view)
-print(polynom.coefficients)
+    @classmethod
+    def from_diameter(cls, diameter):
+        return Circle(diameter / 2)
+
+class Rectangle:
