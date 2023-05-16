@@ -22,18 +22,6 @@ class Rectangle:
         return f"Rectangle({self.length}, {self.width})"
 
 
-class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __repr__(self):
-        return f"Vector({self.x}, {self.y})"
-
-    def __str__(self):
-        return f"Вектор на плоскости с координатами ({self.x}, {self.y})"
-
-
 class IPAddress:
     def __init__(self, ip):
         if isinstance(ip, str):
@@ -65,9 +53,53 @@ class Point:
         self.y = y
 
 
-p1 = Point(1, 2)
-p2 = Point(1, 2)
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-print(p1 == p2)
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
 
-p1 = p2
+    def __str__(self):
+        return f"Вектор на плоскости с координатами ({self.x}, {self.y})"
+
+    def __eq__(self, other):
+        if isinstance(other, Vector):
+            return self.x == other.x and self.y == other.y
+        elif isinstance(other, tuple):
+            return len(other) == 2 and self.x == other[0] and self.y == other[1]
+        return NotImplemented
+
+
+from dataclasses import dataclass
+from functools import total_ordering
+
+
+@dataclass
+@total_ordering
+class Word:
+    word: str
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.word}')"
+
+    def __str__(self):
+        return self.word.capitalize()
+
+    def __eq__(self, other):
+        if isinstance(other, Word):
+            return len(self.word) == len(other.word)
+        return NotImplemented
+
+    def __gt__(self, other):
+        if isinstance(other, Word):
+            return len(self.word) > len(other.word)
+        return NotImplemented
+
+
+print(Word("bee") == Word("hey"))
+print(Word("bee") < Word("geek"))
+print(Word("bee") > Word("geek"))
+print(Word("bee") <= Word("geek"))
+print(Word("bee") >= Word("gee"))
