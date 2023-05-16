@@ -172,12 +172,16 @@ class Version:
         return NotImplemented
 
 
-class ReversibleString:
-    def __init__(self, string):
-        self.string = string
+class Money:
+    def __init__(self, amount):
+        self.amount = amount
 
     def __str__(self):
-        return self.string
+        return f"{self.amount} руб."
+
+    def __pos__(self):
+        return Money(abs(self.amount))
 
     def __neg__(self):
-        return ReversibleString(self.string[::-1])
+        new_amount = -self.amount if self.amount > 0 else self.amount
+        return Money(new_amount)
