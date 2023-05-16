@@ -172,8 +172,12 @@ class Version:
         return NotImplemented
 
 
-versions = [Version("2"), Version("2.1"), Version("1.9.1")]
+class ReversibleString:
+    def __init__(self, string):
+        self.string = string
 
-print(sorted(versions))
-print(min(versions))
-print(max(versions))
+    def __str__(self):
+        return self.string
+
+    def __neg__(self):
+        return ReversibleString(self.string[::-1])
