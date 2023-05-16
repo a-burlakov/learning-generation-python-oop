@@ -218,3 +218,73 @@ class RaiseTo:
 
     def __call__(self, x):
         return x**self.degree
+
+
+import random
+
+
+class Dice:
+    def __init__(self, sides):
+        self.sides = sides
+
+    def __call__(self):
+        return random.randint(1, self.sides)
+
+
+class QuadraticPolynomial:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @property
+    def discriminant(self):
+        return self.b * self.b - 4 * self.a * self.c
+
+    @property
+    def x1(self):
+        discriminant = self.discriminant
+        if discriminant < 0:
+            return None
+        return (-self.b - discriminant**0.5) / (2 * self.a)
+
+    @property
+    def x2(self):
+        discriminant = self.discriminant
+        if discriminant < 0:
+            return None
+        return (-self.b + discriminant**0.5) / (2 * self.a)
+
+    @property
+    def view(self):
+        # Передаю спасибо линтеру Black за то, что помог мне отформатировать этот ужас.
+        view_string = (
+            f"{self.a}x^2 "
+            f"{'-' if self.b < 0 else '+'} {abs(self.b)}x "
+            f"{'-' if self.c < 0 else '+'} {abs(self.c)}"
+        )
+
+        return view_string
+
+    @property
+    def coefficients(self):
+        return f"({self.a}, {self.b}, {self.c})"
+
+    @coefficients.setter
+    def coefficients(self, coefficients):
+        self.a, self.b, self.c = coefficients
+
+    @classmethod
+    def from_iterable(cls, coefficients):
+        return QuadraticPolynomial(*coefficients)
+
+    @classmethod
+    def from_str(cls, coefficients: str):
+        return QuadraticPolynomial(*[float(x) for x in coefficients.split()])
+
+    def __call__(self, x):
+        return self.a * x**2 + self.b * x + self.c
+
+
+class Strip:
+    ...
