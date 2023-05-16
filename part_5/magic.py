@@ -141,12 +141,39 @@ class Month:
         return NotImplemented
 
 
-print(Month(1999, 12) == Month(1999, 12))
-print(Month(1999, 12) < Month(2000, 1))
-print(Month(1999, 12) > Month(2000, 1))
-print(Month(1999, 12) <= Month(1999, 12))
-print(Month(1999, 12) >= Month(2000, 1))
+@total_ordering
+class Version:
 
-months = [Month(1998, 12), Month(2000, 1), Month(1999, 12)]
+    min_length = 2
 
-print(sorted(months))
+    def __init__(self, version):
+        self.version_numbers = [int(n) for n in version.split(".")]
+        self.version_numbers += [0] * (self.min_length - len(self.version_numbers))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{'.'.join([str(n) for n in self.version_numbers])}')"
+
+    def __str__(self):
+        return ".".join([str(n) for n in self.version_numbers])
+
+    def __eq__(self, other):
+        if isinstance(other, Version):
+            return self.version_numbers == other.version_numbers
+        return NotImplemented
+
+    def __gt__(self, other):
+        if isinstance(other, Version):
+            for i, number in enumerate(self.version_numbers):
+                if number > other.version_numbers[i]:
+                    return True
+                elif number < other.version_numbers[i]:
+                    return False
+            return False
+        return NotImplemented
+
+
+versions = [Version("2"), Version("2.1"), Version("1.9.1")]
+
+print(sorted(versions))
+print(min(versions))
+print(max(versions))
