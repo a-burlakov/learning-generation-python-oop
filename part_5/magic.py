@@ -185,3 +185,28 @@ class Money:
     def __neg__(self):
         new_amount = -self.amount if self.amount > 0 else self.amount
         return Money(new_amount)
+
+
+class Adder:
+    def __init__(self, value):
+        self.value = value
+
+    def __call__(self, other):
+        return self.value + other
+
+
+class Calculator:
+    def __call__(self, a, b, operation):
+        match operation:
+            case "+":
+                return a + b
+            case "-":
+                return a - b
+            case "*":
+                return a * b
+            case "/":
+                if b == 0:
+                    raise ValueError("Деление на ноль невозможно")
+                return a / b
+            case _:
+                return None
