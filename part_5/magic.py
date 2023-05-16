@@ -98,8 +98,55 @@ class Word:
         return NotImplemented
 
 
-print(Word("bee") == Word("hey"))
-print(Word("bee") < Word("geek"))
-print(Word("bee") > Word("geek"))
-print(Word("bee") <= Word("geek"))
-print(Word("bee") >= Word("gee"))
+@dataclass
+@total_ordering
+class Month:
+    year: int
+    month: int
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.year}, {self.month})"
+
+    def __str__(self):
+        return f"{self.year}-{self.month}"
+
+    def __getitem__(self, item):
+        if item == 0:
+            return self.year
+        elif item == 1:
+            return self.month
+
+    def __len__(self):
+        return 2
+
+    def __eq__(self, other):
+        if isinstance(other, Month) or isinstance(other, tuple):
+            return (
+                len(other) == len(self)
+                and self.year == other[0]
+                and self.month == other[1]
+            )
+        return NotImplemented
+
+    def __gt__(self, other):
+        if isinstance(other, Month) or isinstance(other, tuple):
+            if self.year > other[0]:
+                return True
+            elif self.year < other[0]:
+                return False
+            elif self.month > other[1]:
+                return True
+            else:
+                return False
+        return NotImplemented
+
+
+print(Month(1999, 12) == Month(1999, 12))
+print(Month(1999, 12) < Month(2000, 1))
+print(Month(1999, 12) > Month(2000, 1))
+print(Month(1999, 12) <= Month(1999, 12))
+print(Month(1999, 12) >= Month(2000, 1))
+
+months = [Month(1998, 12), Month(2000, 1), Month(1999, 12)]
+
+print(sorted(months))
