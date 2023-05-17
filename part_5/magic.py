@@ -334,12 +334,31 @@ class CountCalls:
         return self.func(*args, **kwargs)
 
 
-@CountCalls
-def square(a):
-    return a**2
+class CachedFunction:
+    def __init__(self, func):
+        self.func = func
+        self.cache = {}
+
+    def __call__(self, *args):
+        args_tuple = tuple(args)
+        if args_tuple in self.cache:
+            return self.cache[args_tuple]
+        else:
+            result = self.func(*args)
+            self.cache[args_tuple] = result
+            return result
 
 
-for i in range(100):
-    square(i)
+@CachedFunction
+def slow_fibonacci(n):
+    if n == 1:
+        return 0
+    elif n in (2, 3):
+        return 1
+    return slow_fibonacci(n - 1) + slow_fibonacci(n - 2)
 
-print(square.calls)
+
+print(slow_fibonacci(100))
+
+for args, value in sorted(slow_fibonacci.cache.items()):
+    print(args, value)
