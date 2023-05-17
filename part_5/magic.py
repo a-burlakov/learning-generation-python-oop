@@ -292,3 +292,13 @@ class Strip:
 
     def __call__(self, string):
         return string.strip(self.chars)
+
+
+class Filter:
+    def __init__(self, predicate=None):
+        if predicate is None:
+            predicate = bool
+        self.predicate = predicate
+
+    def __call__(self, iterable):
+        return [x for x in iterable if self.predicate(x)]
