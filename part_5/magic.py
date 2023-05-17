@@ -414,6 +414,4 @@ def hash_function(obj):
     return (temp1 * temp2) % 123456791
 
 
-print(hash_function("python"))
-print(hash_function(12345))
-print(hash_function(None))
+print(["bee", "geek"][True])
