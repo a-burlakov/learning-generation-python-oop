@@ -302,3 +302,23 @@ class Filter:
 
     def __call__(self, iterable):
         return [x for x in iterable if self.predicate(x)]
+
+
+from datetime import date
+
+
+class DateFormatter:
+    _countries_date_formats = {
+        "ru": r"%d.%m.%Y",
+        "us": r"%m-%d-%Y",
+        "ca": r"%Y-%m-%d",
+        "br": r"%d/%m/%Y",
+        "fr": r"%d.%m.%Y",
+        "pt": r"%d-%m-%Y",
+    }
+
+    def __init__(self, country_code: str):
+        self.country_code = country_code
+
+    def __call__(self, d: date):
+        return d.strftime(self._countries_date_formats[self.country_code])
