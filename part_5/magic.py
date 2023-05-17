@@ -384,18 +384,36 @@ class Item:
         return object.__getattribute__(self, name)
 
 
-items = [
-    Item("Обручальное Кольцо", 49000, 7),
-    Item("Мобильный Телефон", 110000, 200),
-    Item("Ноутбук", 150000, 2000),
-    Item("Ручка Паркер", 37000, 20),
-    Item("Статуэтка Оскар", 28000, 4000),
-    Item("Наушники", 11000, 150),
-    Item("Гитара", 32000, 1500),
-    Item("Золотая Монета", 140000, 8),
-    Item("Фотоаппарат", 79000, 720),
-    Item("Лимитированные Кроссовки", 80000, 300),
-]
+class Logger:
+    def __setattr__(self, name, value):
+        print(f"Изменение значения атрибута {name} на {value}")
+        self.__dict__[name] = value
 
-for item in items:
-    print(item.name, item.total)
+    def __delattr__(self, name):
+        print(f"Удаление атрибута {name}")
+        del self.__dict__[name]
+
+
+class Ord:
+    def __getattribute__(self, name):
+        return ord(name)
+
+
+def hash_function(obj):
+    obj_ = str(obj)
+
+    temp1 = 0
+    for i in range(len(obj_) // 2):
+        temp1 += ord(obj_[i]) * ord(obj_[-i - 1])
+
+    if len(obj_) % 2 == 1:
+        temp1 += ord(obj_[len(obj_) // 2])
+
+    temp2 = sum(ord(k) * (-i if i % 2 == 0 else i) for i, k in enumerate(obj_, 1))
+
+    return (temp1 * temp2) % 123456791
+
+
+print(hash_function("python"))
+print(hash_function(12345))
+print(hash_function(None))
