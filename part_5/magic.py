@@ -53,26 +53,9 @@ class Point:
         self.y = y
 
 
-class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __repr__(self):
-        return f"Vector({self.x}, {self.y})"
-
-    def __str__(self):
-        return f"Вектор на плоскости с координатами ({self.x}, {self.y})"
-
-    def __eq__(self, other):
-        if isinstance(other, Vector):
-            return self.x == other.x and self.y == other.y
-        elif isinstance(other, tuple):
-            return len(other) == 2 and self.x == other[0] and self.y == other[1]
-        return NotImplemented
-
-
 from dataclasses import dataclass
+
+
 from functools import total_ordering
 
 
@@ -358,7 +341,28 @@ def slow_fibonacci(n):
     return slow_fibonacci(n - 1) + slow_fibonacci(n - 2)
 
 
-print(slow_fibonacci(100))
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-for args, value in sorted(slow_fibonacci.cache.items()):
-    print(args, value)
+    def module(self):
+        return (self.x * self.x + self.y * self.y) ** 0.5
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+    def __bool__(self):
+        return bool(self.x) or bool(self.y)
+
+    def __int__(self):
+        return int(self.module())
+
+    def __float__(self):
+        return float(self.module())
+
+    def __complex__(self):
+        return complex(self.x, self.y)
