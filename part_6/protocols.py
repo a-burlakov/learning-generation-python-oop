@@ -40,9 +40,28 @@ class DevelopmentTeam:
             yield dev, "senior"
 
 
-beegeek = DevelopmentTeam()
+class AttrsIterator:
+    def __init__(self, obj):
+        self.obj = obj
 
-beegeek.add_junior("Timur")
-beegeek.add_junior("Arthur", "Valery")
-beegeek.add_senior("Gvido")
-print(*beegeek, sep="\n")
+    def __iter__(self):
+        return iter(self.obj.__dict__.items())
+
+    def __next__(self):
+        for k, v in iter(self):
+            yield k, v
+        raise StopIteration
+
+
+class User:
+    def __init__(self, name, surname, age):
+        self.name = name
+        self.surname = surname
+        self.age = age
+
+
+user = User("Debbie", "Harry", 77)
+attrsiterator = AttrsIterator(user)
+
+for what in attrsiterator:
+    print(what)
