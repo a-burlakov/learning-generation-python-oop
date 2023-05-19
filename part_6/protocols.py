@@ -43,14 +43,13 @@ class DevelopmentTeam:
 class AttrsIterator:
     def __init__(self, obj):
         self.obj = obj
+        self._attrs_iterator = iter(self.obj.__dict__.items())
 
     def __iter__(self):
-        return iter(self.obj.__dict__.items())
+        return self
 
     def __next__(self):
-        for k, v in iter(self):
-            yield k, v
-        raise StopIteration
+        return next(self._attrs_iterator)
 
 
 class User:
@@ -63,5 +62,19 @@ class User:
 user = User("Debbie", "Harry", 77)
 attrsiterator = AttrsIterator(user)
 
-for what in attrsiterator:
-    print(what)
+print(*attrsiterator)
+
+
+class Kemal:
+    def __init__(self):
+        self.family = "cats"
+        self.breed = "british"
+        self.master = "Kemal"
+
+
+kemal = Kemal()
+attrs_iterator = AttrsIterator(kemal)
+
+print(next(attrs_iterator))
+print(next(attrs_iterator))
+print(next(attrs_iterator))
