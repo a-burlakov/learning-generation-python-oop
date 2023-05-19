@@ -110,10 +110,10 @@ class Peekable:
             self._peek_value = None
         return next(self._iter)
 
-    def peek(self, default="_undefined_"):
+    def peek(self, default=Ellipsis):
         if self._peek_value:
             return self._peek_value
-        elif default != "_undefined_":
+        elif default != Ellipsis:
             return default
         else:
             raise StopIteration
