@@ -59,22 +59,31 @@ class User:
         self.age = age
 
 
-user = User("Debbie", "Harry", 77)
-attrsiterator = AttrsIterator(user)
+class SkipIterator:
+    def __init__(self, iterable, n: int):
+        self._iter = (
+            x for i, x in enumerate(iter(iterable)) if not n or i % (n + 1) == 0
+        )
 
-print(*attrsiterator)
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self._iter)
 
 
-class Kemal:
-    def __init__(self):
-        self.family = "cats"
-        self.breed = "british"
-        self.master = "Kemal"
+skipiterator = SkipIterator(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1
+)  # пропускаем по одному элементу
 
+print(*skipiterator)
+skipiterator = SkipIterator(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2
+)  # пропускаем по два элемента
 
-kemal = Kemal()
-attrs_iterator = AttrsIterator(kemal)
+print(*skipiterator)
+skipiterator = SkipIterator(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0
+)  # не пропускаем элементы
 
-print(next(attrs_iterator))
-print(next(attrs_iterator))
-print(next(attrs_iterator))
+print(*skipiterator)
