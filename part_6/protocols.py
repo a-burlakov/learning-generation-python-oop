@@ -1,3 +1,6 @@
+import random
+
+
 class Order:
     def __init__(self, cart, customer):
         self.cart = list(cart)  # список покупок
@@ -72,18 +75,51 @@ class SkipIterator:
         return next(self._iter)
 
 
-skipiterator = SkipIterator(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1
-)  # пропускаем по одному элементу
+class RandomLooper:
+    def __init__(self, *iterables):
+        full_list = []
+        for iterable in iterables:
+            full_list.extend(list(iterable))
 
-print(*skipiterator)
-skipiterator = SkipIterator(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2
-)  # пропускаем по два элемента
+        random.shuffle(full_list)
+        self._iter = iter(full_list)
 
-print(*skipiterator)
-skipiterator = SkipIterator(
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0
-)  # не пропускаем элементы
+    def __iter__(self):
+        return self
 
-print(*skipiterator)
+    def __next__(self):
+        return next(self._iter)
+
+
+class Peekable:
+    def __init__(self, iterable):
+        self._iter = iter(iterable)
+        self._iter_to_peek = iter(iterable)
+        try:
+            self._peek_value = next(self._iter_to_peek)
+        except StopIteration:
+            self._peek_value = None
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            self._peek_value = next(self._iter_to_peek)
+        except StopIteration:
+            self._peek_value = None
+        return next(self._iter)
+
+    def peek(self, default="_undefined_"):
+        if self._peek_value:
+            return self._peek_value
+        elif default != "_undefined_":
+            return default
+        else:
+            raise StopIteration
+
+
+iterator = Peekable("Python")
+
+print(*iterator)
+print(iterator.peek(None))
