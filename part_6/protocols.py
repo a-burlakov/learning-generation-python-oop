@@ -119,7 +119,51 @@ class Peekable:
             raise StopIteration
 
 
-iterator = Peekable("Python")
+class SparseArray:
+    def __init__(self, default):
+        self.default = default
+        self.array = []
 
-print(*iterator)
-print(iterator.peek(None))
+    def __getitem__(self, key):
+        if len(self.array) < key + 1:
+            return self.default
+
+        return self.array[key]
+
+    def __setitem__(self, key, value):
+        if len(self.array) < key + 1:
+            self.array += [self.default] * (key + 1 - len(self.array))
+
+        self.array[key] = value
+
+
+class CyclicList:
+    def __init__(self, iterable):
+        self.cyclic_list = list(iterable)
+
+    def __getitem__(self, item: int):
+        return self.cyclic_list[item % len(self.cyclic_list)]
+
+    def __len__(self):
+        return len(self.cyclic_list)
+
+    # def __iter__(self):
+    #     while True:
+    #         yield from self.cyclic_list
+
+    def append(self, value):
+        self.cyclic_list.append(value)
+
+    def pop(self, index=Ellipsis):
+        if index == Ellipsis:
+            return self.cyclic_list.pop()
+        else:
+            return self.cyclic_list.pop(index % len(self.cyclic_list))
+
+
+cyclic_list = CyclicList([1, 2, 3])
+
+for index, elem in enumerate(cyclic_list):
+    if index > 6:
+        break
+    print(elem, end=" ")
