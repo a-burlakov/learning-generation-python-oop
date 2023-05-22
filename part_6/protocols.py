@@ -161,9 +161,5 @@ class CyclicList:
             return self.cyclic_list.pop(index % len(self.cyclic_list))
 
 
-def print_file_content(filename):
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            print(file.read())
-    except FileNotFoundError:
-        print("Файл не найден")
+def non_closed_files(files):
+    return [file for file in files if not file.closed]
