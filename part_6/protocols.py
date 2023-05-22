@@ -161,9 +161,9 @@ class CyclicList:
             return self.cyclic_list.pop(index % len(self.cyclic_list))
 
 
-cyclic_list = CyclicList([1, 2, 3])
-
-for index, elem in enumerate(cyclic_list):
-    if index > 6:
-        break
-    print(elem, end=" ")
+def print_file_content(filename):
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            print(file.read())
+    except FileNotFoundError:
+        print("Файл не найден")
