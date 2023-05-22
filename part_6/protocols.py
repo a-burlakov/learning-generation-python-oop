@@ -163,3 +163,14 @@ class CyclicList:
 
 def non_closed_files(files):
     return [file for file in files if not file.closed]
+
+
+def log_for(logfile, date_str):
+    with (
+        open(logfile, "r", encoding="utf-8") as file,
+        open(f"log_for_{date_str}.txt", "w", encoding="utf-8") as file_result,
+    ):
+        for line in file.readlines():
+            if line.startswith(date_str):
+                new_line_in_result = line.replace(date_str, "").lstrip()
+                file_result.write(new_line_in_result)
