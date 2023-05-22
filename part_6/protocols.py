@@ -174,3 +174,11 @@ def log_for(logfile, date_str):
             if line.startswith(date_str):
                 new_line_in_result = line.replace(date_str, "").lstrip()
                 file_result.write(new_line_in_result)
+
+
+def is_context_manager(obj):
+    return all(x in dir(obj) for x in ["__enter__", "__exit__"])
+
+
+print(is_context_manager(open("output.txt", mode="w")))
+print(is_context_manager(CyclicList([1])))
