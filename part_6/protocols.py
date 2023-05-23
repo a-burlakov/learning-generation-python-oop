@@ -256,11 +256,21 @@ class UpperPrint:
         sys.stdout.write = self.original_write
 
 
-print("Если жизнь одаривает вас лимонами — не делайте лимонад")
-print("Заставьте жизнь забрать их обратно!")
+class Suppress:
+    def __init__(self, *exceptions):
+        self.suppressed_exceptions = exceptions
+        self.exception = None
 
-with UpperPrint():
-    print("Мне не нужны твои проклятые лимоны!")
-    print("Что мне с ними делать?")
+    def __enter__(self):
+        return self
 
-print("Требуйте встречи с менеджером, отвечающим за жизнь!")
+    def __exit__(self, exc_type, exc_val, traceback):
+        self.exception = exc_val
+        return exc_type in self.suppressed_exceptions
+
+
+with Suppress(TypeError, ValueError) as context:
+    number = int("я число")
+
+print(context.exception)
+print(type(context.exception))
