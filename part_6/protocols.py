@@ -240,22 +240,6 @@ class Reloopable:
             self.file.close()
 
 
-class UpperPrint:
-    def __enter__(self):
-        import sys
-
-        self.original_write = sys.stdout.write
-        sys.stdout.write = self.upper_write
-
-    def upper_write(self, text):
-        self.original_write(text.upper())
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        import sys
-
-        sys.stdout.write = self.original_write
-
-
 class Suppress:
     def __init__(self, *exceptions):
         self.suppressed_exceptions = exceptions
@@ -271,6 +255,7 @@ class Suppress:
 
 with Suppress(TypeError, ValueError) as context:
     number = int("я число")
+
 
 from time import perf_counter
 
@@ -301,18 +286,42 @@ class AdvancedTimer:
         return max(self.runs)
 
 
-from time import sleep
+class UpperPrint:
+    def __enter__(self):
+        import sys
 
-timer = AdvancedTimer()
+        self.original_write = sys.stdout.write
+        sys.stdout.write = self.upper_write
 
-with timer:
-    sleep(1.5)
-print(round(timer.last_run, 1))
+    def upper_write(self, text):
+        self.original_write(text.upper())
 
-with timer:
-    sleep(0.7)
-print(round(timer.last_run, 1))
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import sys
 
-with timer:
-    sleep(1)
-print(round(timer.last_run, 1))
+        sys.stdout.write = self.original_write
+
+
+from contextlib import contextmanager
+import sys
+
+
+@contextmanager
+def reversed_print():
+    def upper_write(text):
+        original_write(text[::-1])
+
+    original_write = sys.stdout.write
+    sys.stdout.write = upper_write
+    yield
+    sys.stdout.write = original_write
+
+
+print("Если жизнь одаривает вас лимонами — не делайте лимонад")
+print("Заставьте жизнь забрать их обратно!")
+
+with reversed_print():
+    print("Мне не нужны твои проклятые лимоны!")
+    print("Что мне с ними делать?")
+
+print("Требуйте встречи с менеджером, отвечающим за жизнь!")
