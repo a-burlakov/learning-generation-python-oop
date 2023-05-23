@@ -272,5 +272,47 @@ class Suppress:
 with Suppress(TypeError, ValueError) as context:
     number = int("я число")
 
-print(context.exception)
-print(type(context.exception))
+from time import perf_counter
+
+
+class AdvancedTimer:
+    def __init__(self):
+        self.runs = []
+        self.last_run = None
+
+    def __enter__(self):
+        self.start = perf_counter()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.last_run = perf_counter() - self.start
+        self.runs.append(self.last_run)
+
+    @property
+    def min(self):
+        if not self.runs:
+            return None
+        return min(self.runs)
+
+    @property
+    def max(self):
+        if not self.runs:
+            return None
+        return max(self.runs)
+
+
+from time import sleep
+
+timer = AdvancedTimer()
+
+with timer:
+    sleep(1.5)
+print(round(timer.last_run, 1))
+
+with timer:
+    sleep(0.7)
+print(round(timer.last_run, 1))
+
+with timer:
+    sleep(1)
+print(round(timer.last_run, 1))
