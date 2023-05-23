@@ -180,5 +180,9 @@ def is_context_manager(obj):
     return all(x in dir(obj) for x in ["__enter__", "__exit__"])
 
 
-print(is_context_manager(open("output.txt", mode="w")))
-print(is_context_manager(CyclicList([1])))
+class SuppressAll:
+    def __enter__(self):
+        return None
+
+    def __exit__(self, exc_type, exc_value, trace):
+        return True
