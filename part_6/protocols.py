@@ -214,9 +214,53 @@ class Closer:
             print("Незакрываемый объект")
 
 
-output = open("output.txt", "w", encoding="utf-8")
+class ReadableTextFile:
+    def __init__(self, filename):
+        self.filename = filename
+        self.file = None
 
-with Closer(output) as file:
-    print(file.closed)
+    def __enter__(self):
+        self.file = open(self.filename, "r", encoding="utf-8")
+        return self.file.read().split("\n")
 
-print(file.closed)
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+
+class Reloopable:
+    def __init__(self, file):
+        self.file = file
+
+    def __enter__(self):
+        return self.file.readlines()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+
+class UpperPrint:
+    def __enter__(self):
+        import sys
+
+        self.original_write = sys.stdout.write
+        sys.stdout.write = self.upper_write
+
+    def upper_write(self, text):
+        self.original_write(text.upper())
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import sys
+
+        sys.stdout.write = self.original_write
+
+
+print("Если жизнь одаривает вас лимонами — не делайте лимонад")
+print("Заставьте жизнь забрать их обратно!")
+
+with UpperPrint():
+    print("Мне не нужны твои проклятые лимоны!")
+    print("Что мне с ними делать?")
+
+print("Требуйте встречи с менеджером, отвечающим за жизнь!")
