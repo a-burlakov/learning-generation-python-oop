@@ -340,13 +340,64 @@ class NonNegativeInteger:
             raise ValueError("Некорректное значение")
 
 
+class MaxCallsException(Exception):
+    pass
+
+
+class LimitedTakes:
+    def __set_name__(self, cls, attr):
+        self._attr = attr
+
+    def __init__(self, times):
+        self.max_times = times
+        self.count_times = 0
+
+    def __set__(self, obj, value):
+        obj.__dict__[self._attr] = value
+
+    def __get__(self, obj, cls):
+
+        if self.count_times >= self.max_times:
+            raise MaxCallsException("Превышено количество доступных обращений")
+
+        self.count_times += 1
+
+        if self._attr in obj.__dict__:
+            return obj.__dict__[self._attr]
+        else:
+            raise AttributeError("Атрибут не найден")
+
+
+class TypeChecked:
+    def __set_name__(self, cls, attr):
+        self._attr = attr
+
+    def __init__(self, *types):
+        self.types = types
+
+    def __set__(self, obj, value):
+        if any(isinstance(value, t) for t in self.types):
+            obj.__dict__[self._attr] = value
+        else:
+            raise TypeError("Некорректное значение")
+
+    def __get__(self, obj, cls):
+        if self._attr in obj.__dict__:
+            return obj.__dict__[self._attr]
+        else:
+            raise AttributeError("Атрибут не найден")
+
+
 class Student:
-    score = NonNegativeInteger("score")
+    name = TypeChecked(str)
 
 
 student = Student()
+student.name = "Mary"
 
 try:
-    print(student.score)
-except AttributeError as e:
+    student.name = 99
+except TypeError as e:
     print(e)
+
+print(student.name)
