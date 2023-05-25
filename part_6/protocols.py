@@ -317,11 +317,36 @@ def reversed_print():
     sys.stdout.write = original_write
 
 
-print("Если жизнь одаривает вас лимонами — не делайте лимонад")
-print("Заставьте жизнь забрать их обратно!")
+from keyword import kwlist
 
-with reversed_print():
-    print("Мне не нужны твои проклятые лимоны!")
-    print("Что мне с ними делать?")
 
-print("Требуйте встречи с менеджером, отвечающим за жизнь!")
+class NonNegativeInteger:
+    def __init__(self, attr, default=None):
+        self._attr = attr
+        self.default = default
+
+    def __get__(self, obj, cls):
+        if self._attr in obj.__dict__:
+            return obj.__dict__[self._attr]
+        elif obj.default is not None:
+            return self.default
+        else:
+            raise AttributeError("Атрибут не найден")
+
+    def __set__(self, obj, value):
+        if isinstance(value, int) and value >= 0:
+            obj.__dict__[self._attr] = value
+        else:
+            raise ValueError("Некорректное значение")
+
+
+class Student:
+    score = NonNegativeInteger("score")
+
+
+student = Student()
+
+try:
+    print(student.score)
+except AttributeError as e:
+    print(e)
