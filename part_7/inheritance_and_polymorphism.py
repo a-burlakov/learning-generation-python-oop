@@ -162,14 +162,4 @@ class LimitedCounter(Counter):
         self.value = min(self.value, self.limit)
 
 
-counter = LimitedCounter()
-
-print(counter.value)
-counter.inc()
-counter.inc(4)
-print(counter.value)
-counter.dec()
-counter.dec(2)
-print(counter.value)
-counter.inc(20)
-print(counter.value)
+# # # # ## # # # #
