@@ -117,3 +117,59 @@ class PremiumUser(User):
 
 
 # # # # # # # # # # # # # # # #
+
+
+class Validator:
+    def __init__(self, obj: object):
+        self.obj = obj
+
+    def is_valid(self):
+        return None
+
+
+class NumberValidator(Validator):
+    def is_valid(self):
+        return isinstance(self.obj, (int, float))
+
+
+# # # # # # # # # # # # # # # #
+
+
+class Counter:
+    def __init__(self, start=0):
+        self.value = start
+
+    def inc(self, number=1):
+        self.value += number
+
+    def dec(self, number=1):
+        self.value -= number
+        self.value = max(self.value, 0)
+
+
+class NonDecCounter(Counter):
+    def dec(self, number=1):
+        pass
+
+
+class LimitedCounter(Counter):
+    def __init__(self, start=0, limit=10):
+        self.value = start
+        self.limit = limit
+
+    def inc(self, number=1):
+        self.value += number
+        self.value = min(self.value, self.limit)
+
+
+counter = LimitedCounter()
+
+print(counter.value)
+counter.inc()
+counter.inc(4)
+print(counter.value)
+counter.dec()
+counter.dec(2)
+print(counter.value)
+counter.inc(20)
+print(counter.value)
