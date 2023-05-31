@@ -204,3 +204,24 @@ class Triangle:
 class EquilateralTriangle(Triangle):
     def __init__(self, side):
         super().__init__(side, side, side)
+
+
+from dataclasses import dataclass
+
+
+from dataclasses import dataclass
+
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Book:
+    name: str = "unnamed"
+    author: str = "unknown"
+    release_year: int
+
+
+book = Book(1996)
+
+print(book.name)
