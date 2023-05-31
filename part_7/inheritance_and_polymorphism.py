@@ -186,3 +186,21 @@ class GoldPlan(BasicPlan):
     has_UHD = True
     num_of_devices = 4
     price = "15.99$"
+
+
+# # # # ## # # # #
+
+
+class Triangle:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def perimeter(self):
+        return sum(self.a, self.b, self.c)
+
+
+class EquilateralTriangle(Triangle):
+    def __init__(self, side):
+        super().__init__(side, side, side)
